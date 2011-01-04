@@ -8,32 +8,41 @@
  *  Supports multiple get, set, replace and delete.
  */
 
-function build_cache () {
+function get_cache ($name) {
     
     /*
-     *  Factory function used to build the cache objects.
+     *  Returns the cache object for the given cache name.
      *
-     *  Returns the cache objects in an array.
+     *  If the object hasnt been instantiated yet, it will create it.
      */
     
-    //  Load the configuration settings from the file
+    static $objs = array();
+
+    if (array_key_exists($name, $objs)) {
+        return $objs[$name];
+    }
+
+    //  The object has not yet been instantiated therefore we will load it!
     $CI =& get_instance();
     $this->CI->config->load('cache', true);
     $config = $this->CI->config->item('cache');
-    $loaded = array();
-    $objs = array();
 
-    //  Instantiate the Cache Objects
-    foreach ($config['caches'] as $name => $cache) {
-        if (!in_array($cache['driver'], $loaded)) {
-            require(APPPATH.'libraries/Cache/'.$cache['driver'].EXT);
-            $loaded[] = $cache['driver'];
-        }
-
-        $objs[$name] = new $cache['driver']($cache, $config);
+    //  If the given name dosn't exist.. don't bother.
+    if (!array_key_exists($name, $config['caches'])) {
+        return false;
+    }
+    
+    //  Does the class exist? if not load it.
+    if (!class_exists($conifg['caches'][$name]['driver'])) {
+        require(APPPATH.'libraries/Cache/'.$config['caches'][$name]['driver'].EXT);
     }
 
-    return $objs;
+    $objs[$name] = new $config['caches'][$name]['driver'](
+        $config['caches'][$name],
+        $config
+    );
+    
+    return $objs[$name];
 }
 
 class CacheDriver {
