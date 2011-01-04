@@ -1,9 +1,16 @@
 <?php
+require_once(APPPATH.'libraries/Cache/CacheDriver'.EXT);
 class APC extends CacheDriver {
     
     /*
      *  Stores cache using APC
      */
+    
+    protected function _connect () {
+        if (!function_exists('apc_store')) {
+            return show_error('You do not have the php apc module installed');
+        }
+    }
 
     protected function _set ($key, $value) {
         

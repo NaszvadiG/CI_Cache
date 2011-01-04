@@ -1,50 +1,4 @@
 <?php
-/*
- *  Driver Driven Cache Library
- *
- *  To extend this library simply add a driver to the Cache folder
- *  and then add the driver name to the driver array in the config file.
- *
- *  Supports multiple get, set, replace and delete.
- */
-
-function get_cache ($name) {
-    
-    /*
-     *  Returns the cache object for the given cache name.
-     *
-     *  If the object hasnt been instantiated yet, it will create it.
-     */
-    
-    static $objs = array();
-
-    if (array_key_exists($name, $objs)) {
-        return $objs[$name];
-    }
-
-    //  The object has not yet been instantiated therefore we will load it!
-    $CI =& get_instance();
-    $this->CI->config->load('cache', true);
-    $config = $this->CI->config->item('cache');
-
-    //  If the given name dosn't exist.. don't bother.
-    if (!array_key_exists($name, $config['caches'])) {
-        return false;
-    }
-    
-    //  Does the class exist? if not load it.
-    if (!class_exists($conifg['caches'][$name]['driver'])) {
-        require(APPPATH.'libraries/Cache/'.$config['caches'][$name]['driver'].EXT);
-    }
-
-    $objs[$name] = new $config['caches'][$name]['driver'](
-        $config['caches'][$name],
-        $config
-    );
-    
-    return $objs[$name];
-}
-
 class CacheDriver {
     
     /*
@@ -57,9 +11,15 @@ class CacheDriver {
     protected $settings = array();
     protected $config = array();
 
-    public function __construct ($config, $main_config) {
-        $this->settings = array();
-        $this->config = array();
+    public function __construct ($params) {
+
+        /*
+         *  Class Constructor
+         */
+
+        //  Load configuration and settings
+        $this->settings = $params['settings'];
+        $this->config = $params['config'];
 
         $this->_connect();
     }

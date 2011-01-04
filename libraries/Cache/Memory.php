@@ -1,4 +1,5 @@
 <?php
+require_once(APPPATH.'libraries/Cache/CacheDriver'.EXT);
 class Memory extends CacheDriver {
     
     /*

@@ -5,8 +5,16 @@ class MY_Loader extends CI_Loader {
      *  Core extension of loader to implement the Cache Loading
      */
 
-    var $_caches = array();
+    var $_cache_config = array();
 
+    function __construct () {
+        parent::CI_Loader();
+        
+        $CI =& get_instance();
+        $CI->config->load('cache', TRUE);
+        $this->_cache_config = $CI->config->item('cache');
+    }
+    
     function cache ($name) {
         
         /*
@@ -23,6 +31,18 @@ class MY_Loader extends CI_Loader {
             return $output;
         }
         
-        return $this->library('Cache/'.$name);
+        if (!array_key_exists($name, $this->_cache_config['servers'])) {
+            show_error(
+                'The cache you are requesting to load does not exist:'.$name
+            );
+            return false;
+        }
+        
+        $cache = $this->_cache_config['servers'][$name];
+        return $this->library('Cache/'.$cache['driver'], array(
+            'name' => $name,
+            'config' => $this->_cache_config,
+            'settings' => $cache
+        ), $name);
     }
 }

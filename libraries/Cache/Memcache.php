@@ -1,4 +1,5 @@
 <?php
+require_once(APPPATH.'libraries/Cache/CacheDriver'.EXT);
 class Memcache extends CacheDriver {
     
     /*
@@ -13,13 +14,13 @@ class Memcache extends CacheDriver {
     protected $servers = array();
     protected $memcache = NULL;
     
-    protected function __construct () {
+    public function __construct ($params) {
         
         /*
          *  Class Constructor
          */
 
-        parent::__construct();
+        parent::__construct($params);
     }
 
     protected function _connect () {
@@ -27,6 +28,11 @@ class Memcache extends CacheDriver {
         /*
          *  Connect to Memcache Servers
          */
+        
+        if (!function_exists('memcache_connect')) {
+            show_error('You do not have the php memcache module installed.');
+            return false;
+        }
 
         $this->memcache = new Memcache;
 
