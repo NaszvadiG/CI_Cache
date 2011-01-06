@@ -43,6 +43,6 @@ class MY_Loader extends CI_Loader {
             'name' => $name,
             'config' => $this->_cache_config,
             'settings' => $cache
-        ), $name);
+        ), $name.'_cache');
     }
 }
