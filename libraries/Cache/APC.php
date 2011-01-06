@@ -21,7 +21,7 @@ class APC extends CacheDriver {
         return apc_store(
             $key,
             $value,
-            $this->config['expire']
+            $this->settings['expire']
         );
     }
 

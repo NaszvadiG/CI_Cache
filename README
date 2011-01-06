@@ -53,6 +53,9 @@ This is a PHP 5, and CodeIgniter 2.0 only library.
 3) Edit the config/cache.php file.
 4) You should be good to go!
 
+You can use this library with CodeIgniter 1.7, however you will need to put
+MY_Loader.php into your libraries folder instead of core.
+
 Adding Additional Drivers
 ----------------------------------------------------
 
@@ -63,12 +66,22 @@ _replace methods.
 If your caching method supports multi-get and multi-set in one call then
 you can overload the public methods similar to the Memcache driver.
 
-Add the driver name to the configuration list.
+The driver name is case sensitive.
 
 Now you should be good to go :)
 
 
 Changelog
 --------------------------------------------------
+Version 1.1
+    Changed configuration, now define whether or not to fail silently and
+    the expiration time for the cache specifically and not for all caches.
+
+    Removed the config class variable from CacheDriver as it is no longer
+    required since expiration and silent config parameters are no longer
+    global.
+
+    Removed the drivers list, it was not being used and is unnecessary.
+
 Version 1.0
     Starting the changelog now

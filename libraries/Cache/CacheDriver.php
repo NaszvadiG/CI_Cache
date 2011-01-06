@@ -9,7 +9,6 @@ class CacheDriver {
      */
     
     protected $settings = array();
-    protected $config = array();
 
     public function __construct ($params) {
 
@@ -17,10 +16,7 @@ class CacheDriver {
          *  Class Constructor
          */
 
-        //  Load configuration and settings
         $this->settings = $params['settings'];
-        $this->config = $params['config'];
-
         $this->_connect();
     }
     

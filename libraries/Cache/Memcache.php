@@ -13,15 +13,6 @@ class Memcache extends CacheDriver {
     
     protected $servers = array();
     protected $memcache = NULL;
-    
-    public function __construct ($params) {
-        
-        /*
-         *  Class Constructor
-         */
-
-        parent::__construct($params);
-    }
 
     protected function _connect () {
         
@@ -40,7 +31,7 @@ class Memcache extends CacheDriver {
         $error_reporting = ini_get('error_reporting');
 
         //  Should we stay quiet if we can't connect?
-        if ($this->config['silent']) {
+        if ($this->settings['silent']) {
             ini_set('display_errors', "Off");
             ini_set('error_reporting', 0);
         }
@@ -53,7 +44,7 @@ class Memcache extends CacheDriver {
         }
 
         //  Turn it back on error reporting and display.
-        if ($this->config['silent']) {
+        if ($this->settings['silent']) {
             ini_set('display_errors', $error_display);
             ini_set('error_reporting', $error_reporting);
         }
@@ -69,7 +60,7 @@ class Memcache extends CacheDriver {
             return $this->memcache->multiset(
                 $key,
                 0,
-                $this->config['expire']
+                $this->settings['expire']
             );
         }
 
@@ -77,7 +68,7 @@ class Memcache extends CacheDriver {
             $key,
             $value,
             0,
-            $this->config['expire']
+            $this->settings['expire']
         );
     }
     
@@ -99,7 +90,7 @@ class Memcache extends CacheDriver {
             $key,
             $value,
             0,
-            $this->config['expire']
+            $this->settings['expire']
         );
     }
 

@@ -41,7 +41,6 @@ class MY_Loader extends CI_Loader {
         $cache = $this->_cache_config['servers'][$name];
         return $this->library('Cache/'.$cache['driver'], array(
             'name' => $name,
-            'config' => $this->_cache_config,
             'settings' => $cache
         ), $name.'_cache');
     }
